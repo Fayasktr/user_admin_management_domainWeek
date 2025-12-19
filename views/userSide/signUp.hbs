@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>User Signup</title>
+
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  >
+</head>
+<body class="bg-light" style="margin-top: 10%">
+
+  <div class="container">
+    <div class="row justify-content-center mt-5">
+      <div class="col-md-5">
+
+        <div class="card shadow">
+          <div class="card-body">
+            <h3 class="text-center mb-4">User Signup</h3>
+
+            {{#if error}}
+              <div class="alert alert-danger">
+                {{error}}
+              </div>
+            {{/if}}
+
+            <form action="/signup" method="POST" onsubmit="return validateForm()">
+
+              <div class="mb-3">
+                <label class="form-label">Name</label>
+                <input type="text" class="form-control" id="name" name="name">
+                <small class="text-danger" id="nameError"></small>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" name="email">
+                <small class="text-danger" id="emailError"></small>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Password</label>
+                <input type="password" class="form-control" id="password" name="password">
+                <small class="text-danger" id="passwordError"></small>
+              </div>
+
+              <button class="btn btn-primary w-100">Signup</button>
+            </form>
+
+            <p class="text-center mt-3">
+              Already have an account? <a href="/">Login</a>
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function validateForm() {
+      let isValid = true;
+
+      document.getElementById("nameError").innerText = "";
+      document.getElementById("emailError").innerText = "";
+      document.getElementById("passwordError").innerText = "";
+
+      const name = document.getElementById("name").value.trim();
+      const email= document.getElementById("email").value.trim();
+      const password= document.getElementById("password").value;
+
+      if (name.length < 3) {
+        document.getElementById("nameError").innerText =
+          "Name must be at least 3 characters";
+        isValid = false;
+      }
+      if (!name === name.toString() ){
+        document.getElementById("nameError").innerText= "name must be letters"
+        isValid=false;
+      }
+      if (!email.includes("@")) {
+        document.getElementById("emailError").innerText =
+          "Enter a valid email";
+        isValid = false;
+      }
+
+      if (password.length < 6) {
+        document.getElementById("passwordError").innerText =
+          "Password must be at least 6 characters";
+        isValid = false;
+      }
+
+      return isValid;
+    }
+  </script>
+
+</body>
+</html>

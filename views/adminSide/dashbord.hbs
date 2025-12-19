@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Admin Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 min-h-screen">
+
+  <!-- Header -->
+  <div class="bg-gray-900 text-white px-6 py-4 flex justify-between items-center">
+    <h1 class="text-xl font-semibold">Admin Dashboard</h1>
+    <a href="/admin/logout" class="text-sm bg-red-500 px-3 py-1 rounded">
+      Logout
+    </a>
+  </div>
+
+  <!-- Main -->
+  <div class="p-6">
+
+    <!-- Search -->
+    <form action="/admin/users" method="get" class="mb-4">
+      <input
+        type="text"
+        name="search"
+        placeholder="Search by name..."
+        class="border px-3 py-2 rounded w-64"
+        value="{{search}}"
+      />
+      <button class="bg-blue-600 text-white px-4 py-2 rounded ml-2">
+        Search
+      </button>
+    </form>
+
+    <!-- Create User Button -->
+    <button
+    onclick="openModal()"
+    class="bg-green-600 text-white px-4 py-2 rounded mb-4">
+    + Create User
+    </button>
+
+    <!-- Users Table -->
+    <div class="bg-white shadow rounded overflow-x-auto">
+      <table class="w-full border-collapse">
+        <thead class="bg-gray-200 text-left">
+          <tr>
+            <th class="p-3">Name</th>
+            <th class="p-3">Email</th>
+            <th class="p-3">Status</th>
+            <th class="p-3 text-center">Actions</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {{#each users}}
+          <tr class="border-t">
+            <td class="p-3">{{this.name}}</td>
+            <td class="p-3">{{this.email}}</td>
+
+            <td class="p-3">
+              {{#if this.isBlocked}}
+                <span class="text-red-600 font-semibold">Blocked</span>
+              {{else}}
+                <span class="text-green-600 font-semibold">Active</span>
+              {{/if}}
+            </td>
+
+            <td class="p-3 flex gap-2 justify-center">
+
+              <!-- Edit -->
+              <a href="/admin/edit-user/{{this._id}}"
+                 class="bg-yellow-400 px-3 py-1 rounded text-sm">
+                Edit
+              </a>
+
+              <!-- Block / Unblock -->
+              {{#if this.isBlocked}}
+              <a href="/admin/unblock-user/{{this._id}}"
+                 class="bg-green-500 text-white px-3 py-1 rounded text-sm">
+                Unblock
+              </a>
+              {{else}}
+              <a href="/admin/block-user/{{this._id}}"
+                 class="bg-orange-500 text-white px-3 py-1 rounded text-sm">
+                Block
+              </a>
+              {{/if}}
+
+              <!-- Delete -->
+              <a href="/admin/delete-user/{{this._id}}"
+                 onclick="return confirm('Are you sure?')"
+                 class="bg-red-600 text-white px-3 py-1 rounded text-sm">
+                Delete
+              </a>
+
+            </td>
+          </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+
+</body>
+</html>
