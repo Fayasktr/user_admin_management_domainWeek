@@ -46,18 +46,28 @@
 </head>
 <body>
 
-  <form class="login-box" method="POST" action="/admin/login">
+  <form class="login-box" method="POST" action="/adminSide/login">
     <h2>Admin Login</h2>
 
     {{#if error}}
       <p class="error">{{error}}</p>
     {{/if}}
 
-    <input type="email" name="email" placeholder="Admin Email" required />
-    <input type="password" name="password" placeholder="Password" required />
+    <input type="email" name="email" placeholder="Admin" />
+    <input type="password" name="password" placeholder="Password" />
 
-    <button type="submit">Login</button>
+    <button type="submit" onclick="login()">Login</button>
   </form>
 
+  <script>
+    function login(){
+      const email = document.querySelector('input[name="email"]').value;
+      const password = document.querySelector('input[name="password"]').value;
+      if(!email || !password){
+        alert('Please fill all fields');
+        return;
+      }
+    }
+  </script>
 </body>
 </html>

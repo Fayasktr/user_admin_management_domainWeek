@@ -8,39 +8,53 @@
 
 <body class="bg-gray-100 min-h-screen">
 
-  <!-- Header -->
   <div class="bg-gray-900 text-white px-6 py-4 flex justify-between items-center">
     <h1 class="text-xl font-semibold">Admin Dashboard</h1>
-    <a href="/admin/logout" class="text-sm bg-red-500 px-3 py-1 rounded">
+    <a href="/adminSide/logout" class="text-sm bg-red-500 px-3 py-1 rounded">
       Logout
     </a>
   </div>
 
-  <!-- Main -->
   <div class="p-6">
 
-    <!-- Search -->
-    <form action="/admin/users" method="get" class="mb-4">
-      <input
-        type="text"
-        name="search"
-        placeholder="Search by name..."
-        class="border px-3 py-2 rounded w-64"
-        value="{{search}}"
-      />
+    <form action="/adminSide/search-users" method="get" class="mb-4">
+      <input type="text" name="search" placeholder="Search by name..." class="border px-3 py-2 rounded w-64"
+        value="{{search}}" />
       <button class="bg-blue-600 text-white px-4 py-2 rounded ml-2">
         Search
       </button>
     </form>
 
-    <!-- Create User Button -->
-    <button
-    onclick="openModal()"
-    class="bg-green-600 text-white px-4 py-2 rounded mb-4">
-    + Create User
+    <button onclick="openModal()" class="bg-green-600 text-white px-4 py-2 rounded mb-4">
+      + Create User
     </button>
 
-    <!-- Users Table -->
+    <div id="createUserModal" class="fixed padding-30% inset-0 bg-black bg-opacity-50 flex items-center w-50% h-50% items-center justify-center hidden">
+      <div class="bg-white p-6 rounded shadow-lg">
+        <h2 class="text-lg font-semibold mb-4">Create User</h2>
+        <form action="/adminSide/create-user" method="post">
+          <div class="mb-4">
+            <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
+            <input type="text" name="name" id="name" class="mt-1 p-2 border rounded w-full" required />
+          </div>
+          <div class="mb-4">
+            <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+            <input type="email" name="email" id="email" class="mt-1 p-2 border rounded w-full" required />
+          </div>
+          <div class="mb-4">
+            <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+            <input type="password" name="password" id="password" class="mt-1 p-2 border rounded w-full" required />
+          </div>
+          <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">
+            Create User
+          </button>
+        </form>
+        <button onclick="closeModal()" class="mt-4 bg-gray-600 text-white px-4 py-2 rounded">
+          Close
+        </button>
+      </div>
+    </div>
+
     <div class="bg-white shadow rounded overflow-x-auto">
       <table class="w-full border-collapse">
         <thead class="bg-gray-200 text-left">
@@ -60,37 +74,57 @@
 
             <td class="p-3">
               {{#if this.isBlocked}}
-                <span class="text-red-600 font-semibold">Blocked</span>
+              <span class="text-red-600 font-semibold">Blocked</span>
               {{else}}
-                <span class="text-green-600 font-semibold">Active</span>
+              <span class="text-green-600 font-semibold">Active</span>
               {{/if}}
             </td>
 
             <td class="p-3 flex gap-2 justify-center">
 
-              <!-- Edit -->
-              <a href="/admin/edit-user/{{this._id}}"
-                 class="bg-yellow-400 px-3 py-1 rounded text-sm">
+              <a href="javascript:void(0)" onclick="openEditUser('{{this.email}}')"
+                class="bg-yellow-400 px-3 py-1 rounded text-sm">
                 Edit
               </a>
+              <div id="editUser-{{this.email}}"
+                class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center" style="display: none;">
+                <div class="bg-white p-6 rounded shadow-lg max-w-sm w-full">
+                  <h2 class="text-lg font-semibold mb-4">Edit User</h2>
+                  <form action="/adminSide/edit-user/{{this.email}}" method="post">
+                    <div class="mb-3">
+                      <label class="block text-sm">Name</label>
+                      <input type="text" name="name" value="{{this.name}}" class="border p-2 w-full rounded">
+                    </div>
+                    <div class="mb-3">
+                      <label class="block text-sm">Email</label>
+                      <input type="email" name="email" value="{{this.email}}" class="border p-2 w-full rounded">
+                    </div>
+                    <div class="mb-3">
+                      <label class="block text-sm">Password</label>
+                      <input type="password" name="password" value="{{this.password}}"
+                        class="border p-2 w-full rounded">
+                    </div>
+                    <div class="flex gap-2">
+                      <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">Update</button>
+                      <button type="button" onclick="closeEditUser('{{this.email}}')"
+                        class="bg-gray-500 text-white px-4 py-2 rounded">Close</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
 
-              <!-- Block / Unblock -->
               {{#if this.isBlocked}}
-              <a href="/admin/unblock-user/{{this._id}}"
-                 class="bg-green-500 text-white px-3 py-1 rounded text-sm">
+              <a href="/adminSide/unblock-user/{{this._id}}" class="bg-green-500 text-white px-3 py-1 rounded text-sm">
                 Unblock
               </a>
               {{else}}
-              <a href="/admin/block-user/{{this._id}}"
-                 class="bg-orange-500 text-white px-3 py-1 rounded text-sm">
+              <a href="/adminSide/block-user/{{this._id}}" class="bg-orange-500 text-white px-3 py-1 rounded text-sm">
                 Block
               </a>
               {{/if}}
 
-              <!-- Delete -->
-              <a href="/admin/delete-user/{{this._id}}"
-                 onclick="return confirm('Are you sure?')"
-                 class="bg-red-600 text-white px-3 py-1 rounded text-sm">
+              <a href="/adminSide/delete-user/{{this._id}}" onclick="return confirm('Are you sure?')"
+                class="bg-red-600 text-white px-3 py-1 rounded text-sm">
                 Delete
               </a>
 
@@ -103,5 +137,21 @@
 
   </div>
 
+  <script>
+    function openModal() {
+      document.getElementById('createUserModal').style.display = 'block';
+    }
+    function closeModal() {
+      document.getElementById('createUserModal').style.display = 'none';
+    }
+
+
+    function openEditUser(email) {
+      document.getElementById('editUser-' + email).style.display = 'flex';
+    }
+    function closeEditUser(email) {
+      document.getElementById('editUser-' + email).style.display = 'none';
+    }
+  </script>
 </body>
 </html>

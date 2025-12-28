@@ -18,8 +18,12 @@ const userSchema =mongoose.Schema({
         type:String,
         required:true,
         minlength:6,
-        maxlength:20
+        maxlength:100
+    },
+    isBlocked:{
+        type:Boolean,
+        default:false
     }
 })
-
-export default userSchema;
+const user=mongoose.model("user",userSchema)
+export default user;

@@ -1,10 +1,10 @@
-// import session from 'express-session';
+import session from 'express-session';
 
-// const sessionConfig=session({
-//     secret:'secret_key',
-//     resave:false,
-//     saveUninitialized:false
-// })
+const sessionConfig=session({
+    secret:'secret_key',
+    resave:false,
+    saveUninitialized:false
+})
 
 
-// export default {sessionConfig};
+export default sessionConfig;
