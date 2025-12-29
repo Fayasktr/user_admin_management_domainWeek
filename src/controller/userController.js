@@ -5,13 +5,22 @@ import user from "../models/userModel.js"
 
 
 const login = asyncHandler(async (req, res) => {
+    
     res.render('userSide/login')
 })
+
 const signUp = asyncHandler(async (req, res) => {
     res.render('userSide/signUp')
 })
+
 const home = asyncHandler(async (req, res) => {
-    res.render('userSide/home', { name: req.session.user.name });
+    const users=req.session.user;
+    const uDetailse= await user.findById(users.id)
+    if(uDetailse.isBlocked){
+        req.session.destroy();
+       return res.redirect('/')
+    }
+    return res.render('userSide/home', { name: req.session.user.name });
 })
 
 
@@ -46,7 +55,6 @@ const signUpUser = asyncHandler(async (req, res) => {
         throw new Error("invalid..")
     }
     console.log(hashedPassword)
-    console.log(req.body)
 })
 
 
@@ -73,7 +81,7 @@ const loginUser = asyncHandler(async (req, res) => {
         res.status(400);
         return res.render('userSide/login', { error: 'User is blocked...' })
     }
-
+    
     req.session.user = {
         id: existUser._id,
         name: existUser.name,

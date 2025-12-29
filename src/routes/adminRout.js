@@ -15,8 +15,8 @@ router.get('/adminSide/block-user/:id',adminController.blockUser)
 router.get('/adminSide/unblock-user/:id',adminController.unblockUser)
 router.get('/adminSide/search-users',adminController.searchUser)
 router.post('/adminSide/create-user', adminController.createUser)
-router.get('/adminSide/edit-user/:email', adminController.editUser)
-router.post('/adminSide/edit-user/:email', adminController.updateUser)
+router.get('/adminSide/edit-user/:id', adminController.editUser)
+router.post('/adminSide/edit-user/:id', adminController.updateUser)
 
 
 const adminRout=router;

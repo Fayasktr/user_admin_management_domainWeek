@@ -25,7 +25,7 @@
               </div>
             {{/if}}
 
-            <form action="/login" method="POST">
+            <form action="/login" method="POST" novalidate>
 
               <div class="mb-3">
                 <label class="form-label">Email</label>
@@ -33,7 +33,7 @@
                   type="email"
                   class="form-control"
                   name="email"
-                  required
+                  
                 >
               </div>
 
@@ -43,7 +43,7 @@
                   type="password"
                   class="form-control"
                   name="password"
-                  required
+                  
                 >
               </div>
 

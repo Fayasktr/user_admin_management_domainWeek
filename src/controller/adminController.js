@@ -1,6 +1,7 @@
 import asyncHandler from "express-async-handler";
 import User from "../models/userModel.js";
 
+
 const adminPass = process.env.adminPassword || "1234";
 const adminEmail = process.env.adminEmail || 'admin@gmail.com';
 
@@ -38,7 +39,7 @@ const deleteUser = asyncHandler(async (req, res) => {
 })
 
 const blockUser = asyncHandler(async (req, res) => {
-    console.log(req.session)
+
     const { id } = req.params;
     await User.findByIdAndUpdate(id, {isBlocked:true});
     res.redirect('/adminSide/dashbord');
@@ -68,6 +69,7 @@ const createUser=asyncHandler(async (req, res) => {
 
 const editUser=asyncHandler(async(req,res)=>{
     const {email}=req.params;
+    console.log(req.params)
     const user=await User.findOne({email});
     res.render('adminSide/edit-user',{user});
 })
