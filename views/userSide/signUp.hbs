@@ -61,51 +61,59 @@
     </div>
   </div>
 
-  <script>
-    function validateForm() {
-      let isValid = true;
+ <script>
+  function validateForm() {
+    let isValid = true;
 
-      document.getElementById("nameError").innerText = "";
-      document.getElementById("emailError").innerText = "";
-      document.getElementById("passwordError").innerText = "";
-      document.getElementById("confirmPasswordError").innerText = "";
+    document.getElementById("nameError").innerText = "";
+    document.getElementById("emailError").innerText = "";
+    document.getElementById("passwordError").innerText = "";
+    document.getElementById("confirmPasswordError").innerText = "";
 
-      const name = document.getElementById("name").value.trim();
-      const email = document.getElementById("email").value.trim();
-      const password = document.getElementById("password").value;
-      const confirmPassword = document.getElementById("confirmPassword").value;
+    const name = document.getElementById("name").value.trim();
+    const email = document.getElementById("email").value.trim();
+     const password = document.getElementById("password").value;
+     const confirmPassword = document.getElementById("confirmPassword").value;
 
       if (name.length < 3) {
-        document.getElementById("nameError").innerText = "Name must be at least 3 characters";
+        document.getElementById("nameError").innerText =
+          "Name must be at least 3 characters";
         isValid = false;
       } else if (!/^[a-zA-Z\s]+$/.test(name)) {
-        document.getElementById("nameError").innerText = "Name should only contain letters";
+        document.getElementById("nameError").innerText =
+           "Name should only contain letters";
         isValid = false;
       }
 
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRegex.test(email)) {
-        document.getElementById("emailError").innerText = "Please enter a valid email address";
-        isValid = false;
-      }
-
-      if (password.length < 6) {
-        var passLength = password.length;
-        document.getElementById("passwordError").innerText =
-          "Password must be at least 6 characters";
-        isValid = false;
-      }
-
-      if (confirmPassword !== password) {
-        document.getElementById("confirmPasswordError").innerText = "Passwords do not match";
-        isValid = false;
-      } else if (confirmPassword === "") {
-        document.getElementById("confirmPasswordError").innerText = "Please confirm your password";
-        isValid = false;
-      }
-      return isValid;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      document.getElementById("emailError").innerText =
+        "Please enter a valid email address";
+      isValid = false;
     }
-  </script>
+
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).{6,}$/;
+
+    if (!passwordRegex.test(password)) {
+      document.getElementById("passwordError").innerText =
+        "Password must be at least 6 characters and include uppercase, lowercase, and a symbol";
+      isValid = false;
+    }
+
+    if (confirmPassword === "") {
+      document.getElementById("confirmPasswordError").innerText =
+        "Please confirm your password";
+      isValid = false;
+    } else if (confirmPassword !== password) {
+      document.getElementById("confirmPasswordError").innerText =
+        "Passwords do not match";
+      isValid = false;
+    }
+
+    return isValid;
+  }
+</script>
+
 
 </body>
 
